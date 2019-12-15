@@ -52,6 +52,8 @@
     // echo "<pre>";
     // print_r($parr);
     // echo "</pre>";
+
+    echo $_POST['regions'];
 ?>
 
 </form>
