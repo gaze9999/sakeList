@@ -2,14 +2,12 @@
     header("Content-Type: text/html; chartset=utf-8");
 ?>
 
-<input type="checkbox" value="0" checked>全選</input>
-
+<input type="checkbox" name='regBoxAll[]' value="0" checked>全選</input>
 <?php
     // all sql
     // $sql = "SELECT r.`rId`, r.`regionName`, p.`pId`, p.`prefName`, p.`rId` ";
     // $sql.= "FROM `prefectures` as p, `regions` as r ";
     // $sql.= "ORDER BY p.`pId` ASC ";
-
     // $stmt = $pdo->prepare($sql);
     // $stmt->execute();
     // $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -18,7 +16,6 @@
     $rsql = "SELECT `rId`, `regionName` ";
     $rsql.= "FROM `regions` ";
     $rsql.= "ORDER BY `rId` ASC ";
-    
     $rstmt = $pdo->prepare($rsql);
     $rstmt->execute();
     $rarr = $rstmt->fetchAll(PDO::FETCH_ASSOC);
@@ -27,33 +24,38 @@
     // echo "</pre>";
 ?>
 
-<form name="regions" method="POST">
+<form id="regForm" name="regions" method="POST" action="./db/getList.php">
 <?php
     foreach($rarr as $value) {
         // echo "<pre>";
         // print_r($value);
         // echo "</pre>";        
-        echo "<br><input class='regBox' type='checkbox' value=".$value['rId'].">".$value['regionName']."</input>";
+        echo "<br><input class='regBox' name='regBox[]' data-rId=".$value['rId']." type='checkbox' value=".$value['rId'].">".$value['regionName'];
     };
 ?>
 </form>
-<form name="prefectures" method="POST">
+
+<hr>
+
+<input type="checkbox" name='prefBoxAll[]' value="0" checked>全選</input>
+<form id="prefForm" name="prefectures" method="POST">
 <?php 
     // prefecture sql
     $psql = "SELECT p.`pId`, p.`prefName`, p.`rId`, r.`rId` ";
     $psql.= "FROM `prefectures` as p, `regions` as r ";
     $psql.= "WHERE p.`rId` = r.`rId` ";
     $psql.= "ORDER BY p.`pId` ASC ";
-
     $pstmt = $pdo->prepare($psql);
     $pstmt->execute();
     $parr = $pstmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // echo "<pre>";
-    // print_r($parr);
-    // echo "</pre>";
-
-    echo $_POST['regions'];
 ?>
-
+<?php
+foreach($parr as $value) {
+    // echo "<pre>";
+    // print_r($value);
+    // echo "</pre>";
+?>
+<div class="prefDiv" style="display:none;"><input type='checkbox' class='prefBox' name='prefBox[]' data-rId="<?php echo $value['rId'] ?>" value="<?php echo $value['pId'] ?>"><label><?php echo $value['prefName'] ?><label></div>
+<?php } ?>
 </form>
