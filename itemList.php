@@ -29,10 +29,10 @@
     foreach($rarr as $value) {
         // echo "<pre>";
         // print_r($value);
-        // echo "</pre>";        
-        echo "<br><input class='regBox' name='regBox[]' data-rId=".$value['rId']." type='checkbox' value=".$value['rId'].">".$value['regionName'];
-    };
+        // echo "</pre>";
 ?>
+    <input type='checkbox' class='regBox' name='regBox[]' data-rId="<?php echo $value['rId'] ?>" value="<?php echo $value['rId'] ?>"><label><?php echo $value['regionName'] ?></label>
+    <?php } ?>
 </form>
 
 <hr>
@@ -56,6 +56,6 @@ foreach($parr as $value) {
     // print_r($value);
     // echo "</pre>";
 ?>
-<div class="prefDiv" style="display:none;"><input type='checkbox' class='prefBox' name='prefBox[]' data-rId="<?php echo $value['rId'] ?>" value="<?php echo $value['pId'] ?>"><label><?php echo $value['prefName'] ?><label></div>
+    <div class="prefDiv" style="display:none;"><input type='checkbox' class='prefBox' name='prefBox[]' data-rId="<?php echo $value['rId'] ?>" value="<?php echo $value['pId'] ?>"><label><?php echo $value['prefName'] ?><label></div>
 <?php } ?>
 </form>
