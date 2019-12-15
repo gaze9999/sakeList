@@ -1,6 +1,3 @@
-<?php
-    require_once('./db/db.inc.php');
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,9 +12,35 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 col-sm-12 col-xl-12">
-                <!-- <form name="regions" method="POST" action="./db/getList.php"> -->
-                <?php require_once('./itemList.php') ?>
-                <!-- </form> -->
+                <form id="regForm" name="regions" method="post">
+                    <input type="checkbox" name='regBoxAll[]' value="0" checked>全選</input>
+                    <?php require_once('./itemList.php') ?>
+                    
+                    <?php
+                        $sql.= "GROUP BY r.`rId` ";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute();
+                        $arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        for($i = 0; $i < $rTotal; $i++) {
+                    ?>
+                        <div class="regDiv"><input type='checkbox' class='regBox' name='regBox[]' value="<?php echo $arr[$i]['rId'] ?>"><label><?php echo $arr[$i]['regionName'] ?></label></div>
+                    <?php } ?>
+
+                    <input type="checkbox" name='prefBoxAll[]' value="0" checked>全選</input>
+                    <?php require_once('./itemList.php') ?>
+                    <?php
+                        $sql2.= "GROUP BY p.`pId` ";
+                        $stmt2 = $pdo->prepare($sql2);
+                        $stmt2->execute();
+                        $arr2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+                            // echo "<pre>";
+                            // print_r($arr2);
+                            // echo "<pre>";
+                        for($i = 0; $i < count($arr2); $i++) {
+                    ?>
+                        <div class="regDiv"><input type='checkbox' class='regBox' name='regBox[]' value="<?php echo $arr2[$i]['pId'] ?>"><label><?php echo $arr2[$i]['prefName'] ?></label></div>
+                    <?php } ?>
+                </form>
             </div>
         </div>
     </div>
@@ -26,33 +49,6 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <!-- <script src="./dist/js/rSelect.js"></script> -->
-    <script>
-        let regBox = $('.regBox');
-        let prefBox = $('.prefBox');
-        let prefBlock = $('.prefDiv');
-        
-        prefBox.each(function(){
-            // console.log($(this).data());
-        });
-
-        $(regBox).on('change', function(){
-            if (!$(this).is(':checked')) {
-            rData = $(this).data('rid');
-                rIdCheck('display:none');
-            } else {
-            rData = $(this).data('rid');
-                rIdCheck('display:true');
-            };
-        });
-
-        function rIdCheck(i){
-            prefBox.each(function(){
-                pData = $(this).data('rid');
-                if (pData == rData){
-                    $(this).parent().attr('style', i);
-                };
-            });
-        };
-    </script>
+    <!-- <script src="./dist/js/displayMethord.js"></script> -->
 </body>
 </html>
